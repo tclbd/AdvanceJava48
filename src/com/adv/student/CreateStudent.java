@@ -5,6 +5,12 @@
  */
 package com.adv.student;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author Faculty Pc
@@ -28,8 +34,6 @@ public class CreateStudent extends javax.swing.JFrame {
     private void initComponents() {
 
         createStudentLabel = new javax.swing.JLabel();
-        idLabel = new javax.swing.JLabel();
-        id = new javax.swing.JTextField();
         nameLabel = new javax.swing.JLabel();
         name = new javax.swing.JTextField();
         agelabel = new javax.swing.JLabel();
@@ -37,16 +41,13 @@ public class CreateStudent extends javax.swing.JFrame {
         cell = new javax.swing.JTextField();
         cellNo = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Create Student");
 
         createStudentLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         createStudentLabel.setText("Create Student");
-
-        idLabel.setText("ID");
-
-        id.setToolTipText("");
 
         nameLabel.setText("Name");
 
@@ -62,20 +63,27 @@ public class CreateStudent extends javax.swing.JFrame {
             }
         });
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(idLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(agelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cellNo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(93, 93, 93)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBack)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(agelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cellNo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(id)
                     .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(age, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                     .addComponent(cell, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
@@ -83,18 +91,14 @@ public class CreateStudent extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(createStudentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(11, 11, 11)))
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(85, 85, 85)
                 .addComponent(createStudentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idLabel)
-                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameLabel)
                     .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -107,7 +111,9 @@ public class CreateStudent extends javax.swing.JFrame {
                     .addComponent(cellNo)
                     .addComponent(cell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(62, 62, 62)
-                .addComponent(btnSave)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSave)
+                    .addComponent(btnBack))
                 .addContainerGap(89, Short.MAX_VALUE))
         );
 
@@ -115,20 +121,50 @@ public class CreateStudent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        String studentID = id.getText();
+     
         String studentName = name.getText();
         String studentage = age.getText();
         String studentCell = cell.getText();
-        System.out.println(studentID + " " + studentName + " " + studentage + " " + studentCell);
+        System.out.println( studentName + " " + studentage + " " + studentCell);
+       
+        
+        String url = "jdbc:mysql://localhost:3306/newdb";
+        String username = "root";
+        String password = "root";
+        
+        System.out.println("Connecting database...");
+        
+        
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            System.out.println("Database connected!");
+             //create a Statement from the connection
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO student (name, age, cell)" + "VALUES ('" + studentName + "', '" + Integer.valueOf(studentage) + "', '" + studentCell + "' )");
+
+//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO student(name, age, cell) VALUES (?, ?, ?)");
+//            stmt.setString(1, studentName);
+//            stmt.setString(2, Integer.valueOf(studentage).toString());
+//            stmt.setString(3, studentCell);
+//            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Cannot connect the database!", e);
+        }
+
         clearFields();
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void clearFields(){
-        id.setText("");
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        new MainForm().setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void clearFields() {
         name.setText("");
         age.setText("");
         cell.setText("");
     }
+
     /**
      * @param args the command line arguments
      */
@@ -167,12 +203,11 @@ public class CreateStudent extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField age;
     private javax.swing.JLabel agelabel;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnSave;
     private javax.swing.JTextField cell;
     private javax.swing.JLabel cellNo;
     private javax.swing.JLabel createStudentLabel;
-    private javax.swing.JTextField id;
-    private javax.swing.JLabel idLabel;
     private javax.swing.JTextField name;
     private javax.swing.JLabel nameLabel;
     // End of variables declaration//GEN-END:variables
