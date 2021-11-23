@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -138,14 +139,18 @@ public class CreateStudent extends javax.swing.JFrame {
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             System.out.println("Database connected!");
              //create a Statement from the connection
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO student (name, age, cell)" + "VALUES ('" + studentName + "', '" + Integer.valueOf(studentage) + "', '" + studentCell + "' )");
+//            Statement statement = connection.createStatement();
+//            statement.executeUpdate("INSERT INTO student (name, age, cell)" + "VALUES ('" + studentName + "', '" + Integer.valueOf(studentage) + "', '" + studentCell + "' )");
 
-//            PreparedStatement stmt = connection.prepareStatement("INSERT INTO student(name, age, cell) VALUES (?, ?, ?)");
-//            stmt.setString(1, studentName);
-//            stmt.setString(2, Integer.valueOf(studentage).toString());
-//            stmt.setString(3, studentCell);
-//            stmt.executeUpdate();
+            String sql = "INSERT INTO student(name, age, cell) VALUES (?, ?, ?)";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, studentName);
+            stmt.setString(2, Integer.valueOf(studentage).toString());
+            stmt.setString(3, studentCell);
+            int status = stmt.executeUpdate();
+            if(status > 0){
+                JOptionPane.showMessageDialog(rootPane, "Data Inserted");
+            }
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
