@@ -10,7 +10,7 @@ public class ResultSetMetaDataDemo1 {
     public ResultSetMetaDataDemo1() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/exam6?user=root&password=root");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/employees?user=root&password=1234");
         } catch (Exception e) {
             System.out.println("Error in connection" + e);
         }

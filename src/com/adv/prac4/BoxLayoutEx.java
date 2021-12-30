@@ -14,8 +14,7 @@ public class BoxLayoutEx extends JFrame {
 
         setTitle("Box Layout Example");
         setSize(150, 200);
-        setLayout(
-                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
         JButton btn1 = new JButton("Button 1");
         JButton btn2 = new JButton("Button 2");

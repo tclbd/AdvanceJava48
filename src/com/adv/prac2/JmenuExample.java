@@ -21,10 +21,13 @@ public class JmenuExample extends JFrame implements ActionListener {
         mnu2 = new JMenu("Entry");
         mnu3 = new JMenu("help");
         mnu4 = new JMenu("Quit");
+        
+        
         item1 = new JMenuItem("Exit");
         item2 = new JMenuItem("New");
         item3 = new JMenuItem("Open");
         item4 = new JMenuItem("About");
+        
         item1.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         item1.setIcon(new javax.swing.ImageIcon(getClass().getResource("branch.png")));
 

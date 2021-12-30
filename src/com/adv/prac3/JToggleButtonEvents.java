@@ -18,7 +18,6 @@ public class JToggleButtonEvents {
 //            }
 //        });
         jtb.addItemListener(new ItemListener() {
-
             @Override
             public void itemStateChanged(ItemEvent ev) {
                 if (ev.getStateChange() == ItemEvent.SELECTED) {

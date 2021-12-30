@@ -20,11 +20,11 @@ public class MyFlowLayout {
         f.add(b3);
         f.add(b4);
         f.add(b5);
-        f.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 20));
+        f.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
         //setting flow layout of right alignment
-        //f.setSize(300, 300);
+        f.setSize(300, 300);
         f.setVisible(true);
-        f.pack();
+        //f.pack();
     }
 
     public static void main(String[] args) {

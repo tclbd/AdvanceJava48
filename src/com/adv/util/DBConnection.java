@@ -11,7 +11,7 @@ public class DBConnection {
         Connection con = null;
         String url = "jdbc:mysql://localhost:3306/newdb";
         String username = "root";
-        String password = "root";
+        String password = "1234";
         try {
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
